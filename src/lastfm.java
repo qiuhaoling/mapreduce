@@ -24,7 +24,7 @@ public class lastfm extends Mapper<LongWritable, Text, Text, Text> {
                     outputKey.set(entry2.get(0));
                 }
             }
-            context.write(new Text(entry.track_id),outputKey);
+            context.write(new Text(entry.track_id), outputKey);
         }
     }
 
