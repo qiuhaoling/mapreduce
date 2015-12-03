@@ -9,6 +9,7 @@ import java.util.Map;
 /**
  * Created by qiuhaoling on 11/29/15.
  */
+/*
 public class tasteprofile extends org.apache.hadoop.mapreduce.Mapper<LongWritable, Text, Text, Text> {
     private HashMap<String, Pair<String, Integer>> recoder;
 
@@ -36,4 +37,12 @@ public class tasteprofile extends org.apache.hadoop.mapreduce.Mapper<LongWritabl
             context.write(new Text(en.getValue().getFirst()), new Text(en.getKey()));
         }
     }
+}
+*/
+public class tasteprofile extends org.apache.hadoop.mapreduce.Mapper<LongWritable, Text, Text, Text> {
+    public void map(LongWritable offset, Text value, Context context) throws IOException, InterruptedException {
+        String inputStr[] = value.toString().split("\t");
+        context.write(new Text(inputStr[2]), new Text(inputStr[1]));
+    }
+
 }
