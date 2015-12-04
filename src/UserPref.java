@@ -54,14 +54,14 @@ public class UserPref extends Configured implements Tool {
         job1.setMapOutputKeyClass(Text.class);
         job1.setMapOutputValueClass(Text.class);
         job1.setReducerClass(unique_track_join.class);
-
-        FileOutputFormat.setOutputPath(job1, new Path(args[2]));
+        String intermediate = args[2]+System.nanoTime();
+        FileOutputFormat.setOutputPath(job1, new Path(intermediate));
 
         job1.setOutputKeyClass(Text.class);
         job1.setOutputValueClass(Text.class);
         job1.setOutputFormatClass(TextOutputFormat.class);
 
-        job1.waitForCompletion(false);
+        //job1.waitForCompletion(false);
         Log log = LogFactory.getLog(UserPref.class);
         log.info("Hello World!");
 
@@ -76,12 +76,10 @@ public class UserPref extends Configured implements Tool {
         job2.setMapOutputKeyClass(Text.class);
         job2.setMapOutputValueClass(Text.class);
         job2.setReducerClass(GenreJoin.class);
-
-        FileOutputFormat.setOutputPath(job2, new Path(args[4]));
-
         job2.setOutputKeyClass(Text.class);
         job2.setOutputValueClass(Text.class);
         job2.setOutputFormatClass(TextOutputFormat.class);
+        FileOutputFormat.setOutputPath(job2, new Path(args[4]+System.nanoTime()));
         job2.waitForCompletion(false);
 
         return 0;
