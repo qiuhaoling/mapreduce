@@ -1,6 +1,9 @@
 import org.apache.accumulo.core.util.Pair;
+import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Mapper;
+import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
 import java.util.HashMap;
@@ -9,40 +12,25 @@ import java.util.Map;
 /**
  * Created by qiuhaoling on 11/29/15.
  */
-/*
-public class tasteprofile extends org.apache.hadoop.mapreduce.Mapper<LongWritable, Text, Text, Text> {
-    private HashMap<String, Pair<String, Integer>> recoder;
+public class tasteprofile {
+    public static final class tasteprofileMapper extends Mapper<LongWritable,Text,Text,IntWritable>
+    {
 
-    public void setup(Context context) throws IOException, InterruptedException {
-        recoder = new HashMap<String, Pair<String, Integer>>();
-    }
-
-    public void map(LongWritable offset, Text value, Context context) throws IOException, InterruptedException {
-        String inputStr[] = value.toString().split("\t");
-        Pair<String, Integer> entry = null;
-        entry = recoder.get(inputStr[0]);
-        if (entry == null) {
-            recoder.put(inputStr[0], new Pair<String, Integer>(inputStr[1], Integer.parseInt(inputStr[2])));
-            return;
-        }
-        if (entry.getSecond() < Integer.parseInt(inputStr[2])) {
-            recoder.put(inputStr[0], new Pair<String, Integer>(inputStr[1], Integer.parseInt(inputStr[2])));
-            return;
-        }
-        return;
-    }
-
-    public void cleanup(Context context) throws IOException, InterruptedException {
-        for (Map.Entry<String, Pair<String, Integer>> en : recoder.entrySet()) {
-            context.write(new Text(en.getValue().getFirst()), new Text(en.getKey()));
+        public void map(LongWritable offset, Text value, Context context) throws IOException, InterruptedException {
+            String inputStr[] = value.toString().split("\t");
+            context.write(new Text(inputStr[1]), new IntWritable(Integer.parseInt(inputStr[2])));
         }
     }
-}
-*/
-public class tasteprofile extends org.apache.hadoop.mapreduce.Mapper<LongWritable, Text, Text, Text> {
-    public void map(LongWritable offset, Text value, Context context) throws IOException, InterruptedException {
-        String inputStr[] = value.toString().split("\t");
-        context.write(new Text(inputStr[2]), new Text(inputStr[1]));
+    public static final class tasteprofileReducer extends Reducer<Text,IntWritable,Text,IntWritable>
+    {
+        public void reduce(Text key,Iterable<IntWritable> value,Context context) throws IOException, InterruptedException {
+            int sum = 0;
+            for(IntWritable it : value)
+            {
+                sum+=it.get();
+            }
+            context.write(key,new IntWritable(sum));
+        }
     }
 
 }

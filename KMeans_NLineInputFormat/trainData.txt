@@ -1,0 +1,1 @@
+/tmp/hadoop-qiuhaoling/mapred/local/1449299257261/trainData.txt

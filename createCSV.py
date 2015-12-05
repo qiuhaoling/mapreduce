@@ -12,21 +12,13 @@ def get_filepaths(directory):
 
 	return file_paths
 
-full_file_paths = get_filepaths("C:\Users\Pengyi\Downloads\lastfm_train")
-
-outfile = csv.writer(open('C:\Users\Pengyi\Downloads\output.csv', 'w'))
-#with open('/home/spymagic/final/output.csv', 'w') as outfile:
+full_file_paths = get_filepaths("/home/qiuhaoling/Desktop/project/lastfm_train")
+outfile = open('/tmp/output', 'w')
 for fname in full_file_paths:
 		with open(fname) as infile:
 			data = json.load(infile)
-
+                        data.pop("similars")
 			if len(data["tags"])!=0:
-				#parse the first tag
-				tag = data["tags"][0][0]
-				#parse the track_id
-				track_id=data["track_id"]
-				#parse the title
-				title=data["title"]
-
-				outfile.writerow([track_id, title.encode('utf-8'), tag.encode('utf-8')])
-
+                            #json.dump(data,outfile)
+                            outfile.write(json.dumps(data)+'\n')
+outfile.close()

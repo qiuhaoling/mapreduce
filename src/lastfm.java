@@ -17,21 +17,15 @@ public class lastfm extends Mapper<LongWritable, Text, Text, Text> {
         if (!entry.tags.isEmpty()) {
             Text outputKey = new Text();
             int outputValue = 0;
-            for (ArrayList<String> entry2 : entry.tags) {
-                //context.write(new Text(entry2.get(0)), new Text(entry2.get(1)));
-                if (Integer.parseInt(entry2.get(1)) > outputValue) {
-                    outputValue = Integer.parseInt(entry2.get(1));
-                    outputKey.set(entry2.get(0));
-                }
-            }
-            context.write(new Text(entry.track_id), outputKey);
+            if(entry.tags.size()>0)
+                context.write(new Text(entry.track_id), new Text(entry.tags.get(0).get(0)));
         }
     }
 
     public static class LastFM_Format {
         public String artist;
         public String timestamp;
-        public ArrayList<ArrayList<String>> similars;
+        //public ArrayList<ArrayList<String>> similars;
         public ArrayList<ArrayList<String>> tags;
         public String track_id;
         public String title;
