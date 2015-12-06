@@ -37,7 +37,6 @@ public class KMeans {
         String output = OUT + System.nanoTime();
         String again_input = output;
 
-
         URI randfile = new URI(CENTROID + CENTROID_FILE_NAME);
         FileSystem fs2 = FileSystem.get(new Configuration());
         BufferedWriter br2 = new BufferedWriter(new FileWriter(randfile.toString()));
@@ -53,7 +52,6 @@ public class KMeans {
         }
         br2.close();
         fs2.close();
-
 
         // Reiterating till the convergence
         int iterator = 1;
@@ -127,12 +125,13 @@ public class KMeans {
                     break;
                 }
             }
+
             log.info("Iter "+iterator+" finished!");
             ++iterator;
             again_input = output;
             output = OUT + System.nanoTime();
         }
-
+/*
         Job job = new Job();
         URI hdfsPath = new URI(again_input + OUTPUT_FILE_NAME);
         // upload the file to hdfs. Overwrite any existing copy.
@@ -151,7 +150,7 @@ public class KMeans {
         FileOutputFormat.setOutputPath(job, new Path(output));
 
         job.waitForCompletion(false);
-
+*/
     }
 
     /*
@@ -217,7 +216,7 @@ public class KMeans {
             }
         }
     }
-
+/*
     public static class kMean_Data_Process extends Mapper<LongWritable, Text, Text, NullWritable> {
 
         public static Vector mCenters[];
@@ -241,10 +240,6 @@ public class KMeans {
             cacheReader.close();
         }
 
-        /*
-         * Map function will find the minimum center of the point and emit it to
-         * the reducer
-         */
         @Override
         public void map(LongWritable key, Text value,
                         Context context) throws IOException, InterruptedException {
@@ -264,7 +259,7 @@ public class KMeans {
             context.write(new Text(mark + "," + point.VectorToString()), NullWritable.get());
         }
     }
-
+*/
     public static class Reduce extends Reducer<Text, Text, Text, NullWritable> {
 
         /*

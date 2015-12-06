@@ -8,32 +8,34 @@ import java.io.IOException;
  * Created by qiuhaoling on 12/3/15.
  */
 public class Vector implements WritableComparable<Vector> {
-    public static int Dimension = 3;
-    public static int offset = 1;
+    public static int Dimension = 2;
+
     public double vector[];
 
     public Vector() {
         super();
         vector = new double[this.Dimension];
     }
-/*
+
+    /*
+        public static double distance(Vector src, Vector dst) {
+            //if(src.vector.size()!=dst.vector.size())return -1;
+            double sum = 0;
+            for (int i = 0; i < Dimension; ++i) {
+                sum += Math.pow(src.vector[i] - dst.vector[i], (double) Dimension);
+            }
+            return Math.pow(sum, 1 / (double) Dimension);
+        }
+    */
     public static double distance(Vector src, Vector dst) {
         //if(src.vector.size()!=dst.vector.size())return -1;
         double sum = 0;
         for (int i = 0; i < Dimension; ++i) {
-            sum += Math.pow(src.vector[i] - dst.vector[i], (double) Dimension);
+            sum += Math.pow(src.vector[i] - dst.vector[i], 2.0);
         }
-        return Math.pow(sum, 1 / (double) Dimension);
+        return Math.pow(sum, 0.5);
     }
-*/
-public static double distance(Vector src, Vector dst) {
-    //if(src.vector.size()!=dst.vector.size())return -1;
-    double sum = 0;
-    for (int i = 0; i < Dimension; ++i) {
-        sum += Math.pow(src.vector[i] - dst.vector[i], 2.0);
-    }
-    return Math.pow(sum, 0.5);
-}
+
     public static Vector StringToVector(String in) {
         String str[] = in.split(",");
         Vector result = new Vector();
@@ -48,12 +50,29 @@ public static double distance(Vector src, Vector dst) {
         return (double) SipHashInline.hash24(0, 0, data);
         //return Double.parseDouble(str);
     }
-
+    /*
     public static Vector InputParser(String str) {
         String input[] = str.split(",");
         Vector result = new Vector();
         for (int i = 0; i < Dimension; ++i) {
             result.vector[i] = Hashfun(input[i + offset]);
+        }
+        return result;
+    }
+    */
+
+    public static Vector InputParser(String str) {
+        String input[] = str.split(",");
+        Vector result = new Vector();
+        int offset = 0;
+        for (int i = 0; i < Dimension; ++i) {
+            try{
+                result.vector[i] = Double.parseDouble(input[i + offset]);
+            }catch(Exception e)
+            {
+                return null;
+            }
+
         }
         return result;
     }
